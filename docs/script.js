@@ -1,7 +1,7 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-// Array of ASCII Codes Valid to Be Part of the Password
+// Arrays of ASCII Codes Valid to Be Part of the Password
 const LOWERCASE_CHARS = getChartSetCodes(97, 122);
 const UPPERCASE_CHARS = getChartSetCodes(65, 90);
 const NUMBER_CHARS = getChartSetCodes(48, 57);
@@ -40,16 +40,16 @@ function generatePassword() {
 
   var currWorkingSet = [];
 
-  if (inputNumbs)
+  if (inputNumbs || allRejected)
     currWorkingSet = currWorkingSet.concat(NUMBER_CHARS);
   
-  if (inputUpper)
+  if (inputUpper || allRejected)
     currWorkingSet = currWorkingSet.concat(UPPERCASE_CHARS);
   
-  if (inputSymbs)
+  if (inputSymbs || allRejected)
     currWorkingSet = currWorkingSet.concat(SYMBOL_CHARS);
 
-  if (inputLower)
+  if (inputLower || allRejected)
     currWorkingSet = currWorkingSet.concat(LOWERCASE_CHARS);
 
   var currentPass = [];
@@ -71,6 +71,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// Returs an Array From the Specified Limits
 function getChartSetCodes(min, max) { 
   var retArray = [];
 
@@ -81,6 +82,7 @@ function getChartSetCodes(min, max) {
   return retArray;
 }
 
+// Prompts User for Password Length And Validates Input
 function askUserForPassLength() { 
   var ret = -1;
 
@@ -88,7 +90,7 @@ function askUserForPassLength() {
     var lengthInput = prompt("Provide a Length for Your Password (Between 8 and 128)");
 
     // Stop Cicle if User Cancelled;
-    if (lengthInput == undefined)
+    if (lengthInput === undefined)
       break;
 
     if (isNaN(lengthInput)) {
@@ -102,7 +104,7 @@ function askUserForPassLength() {
     }
     else if (lengthInput > 128) {
       alert("Provided Password Length is Greater Than 128 Characters");
-      continue
+      continue;
     }
 
     ret = lengthInput;
@@ -111,29 +113,27 @@ function askUserForPassLength() {
   return ret;
 }
 
+// Prompts user for Yes/No Question and Validates Input
 function askUserYesOrNo(prompText) { 
 
-  var retResponse = undefined;
+  var retResponse;
 
-  while (retResponse == undefined) {
+  while (retResponse === undefined) {
 
     var userResponse = prompt(`${prompText} (yes / no)`);
 
-    if (userResponse == undefined) {
+    // If User Presses Cancel, Assume Option Was Denied
+    if (userResponse == undefined)
       break;
-    }
 
     userResponse = userResponse.toLowerCase();
 
-    if (userResponse.charAt(0) == "y") {
+    if (userResponse.charAt(0) === "y")
       retResponse = true;
-    }
-    else if (userResponse.charAt(0) == "n") {
+    else if (userResponse.charAt(0) === "n")
       retResponse = false;
-    }
-    else { 
+    else
       alert("Invalid Input for Selection, Try Again! :(");
-    }
   }
 
   return retResponse;
